@@ -2,8 +2,53 @@
 <html>
   <head>
     <title>Binary Search</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
   <body>
-    <h1>Binary Search</h1>
+    <div class="container">
+      <h1>Binary Search</h1>
+      <h3>Base array: {{ baseArray }}</h3>
+
+      <form action="/resetArray" method="POST">
+        {% csrf_token %}
+        <button type="submit" type="button" class="btn btn-danger">Reset Array</button>
+      </form>
+
+      <form action="/setArray" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="baseArray">Set array here. Input the max index for the array (note that the total index of the array will be plus one of what you entered since it will include index 0)</label><br>
+          <input name="baseArray" type="number" class="form-control" placeholder="Set number of index here">
+        </div>
+        <button type="submit" type="button" class="btn btn-primary">Set Array</button>
+      </form>
+      <form action="/findElement" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="find">element you want to find</label><br>
+          <input name="element" type="number" class="form-control" placeholder="Set number of index here">
+        </div>
+        <button type="submit" type="button" class="btn btn-primary">Find Element</button>
+      </form>
+      <table class="table table-hover">
+        <tr>
+          <th>Min</th>
+          <th>Max</th>
+          <th>Average</th>
+        </tr>
+        <tr>
+          <td>Bill Gates</td>
+          <td>55577854</td>
+          <td>55577854</td>
+        </tr>
+      </table>
+    </div>
   </body>
 </html>
