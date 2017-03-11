@@ -53,10 +53,11 @@ def findElement(request):
                 #arrayMaxIndex statys the same since its the last
                 arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
             elif  int(request.POST['element']) < array[arrayAveIndex]:
-                arrayMinIndex = arrayAveIndex
-                #arrayMaxIndex statys the same since its the last
+                arrayMaxIndex = arrayAveIndex
+                #arrayMinIndex statys the same since its less than ave 
                 arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
-
+        else:
+            return redirect('/')
 
 def setArray(request):
     tempArray = []
