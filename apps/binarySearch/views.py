@@ -16,7 +16,7 @@ def index(request):
     return render(request, 'binarySearch/index.html', data)
 
 def findElement(request):
-    print ("find-----\n", request.POST)
+    print ("find-----\n", request.POST['element'])
     array = request.session['baseArray']
     arrayMinIndex = 0 
     arrayMaxIndex = len(array) - 1
@@ -24,13 +24,39 @@ def findElement(request):
 
     arrayMins = []
     arrayMaxes = []
+    found = False
+
+
 
 
     print ("array-----\n", array)
     print ("arrayMin-----\n", arrayMinIndex)
     print ("arrayMax-----\n", arrayMaxIndex)
     print ("arrayAve-----\n", arrayAveIndex)
-    return redirect('/')
+
+    if len(array) == 0:
+        # array has no elements
+        return redirect('/')
+    elif arrayMinIndex == arrayMaxIndex:
+        #only one element in the array
+        return redirect('/')
+    elif array[arrayMaxIndex] == int(request.POST['element']):
+        # max is equal to target
+        return redirect('/')
+    else: 
+        while not found:
+            if int(request.POST['element']) == array[arrayAveIndex]:
+                # found
+                return redirect('/')
+            elif array[arrayAveIndex] < int(request.POST['element']):
+                arrayMinIndex = arrayAveIndex
+                #arrayMaxIndex statys the same since its the last
+                arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
+            elif  int(request.POST['element']) < array[arrayAveIndex]:
+                arrayMinIndex = arrayAveIndex
+                #arrayMaxIndex statys the same since its the last
+                arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
+
 
 def setArray(request):
     tempArray = []
