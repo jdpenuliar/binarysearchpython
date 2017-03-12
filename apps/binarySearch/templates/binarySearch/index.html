@@ -43,11 +43,13 @@
           <th>Max</th>
           <th>Average</th>
         </tr>
-        <tr>
-          <td>Bill Gates</td>
-          <td>55577854</td>
-          <td>55577854</td>
-        </tr>
+        {% for i in stepsArray %}
+          <tr>
+            <td>{{ i.minIndex }}</td>
+            <td>{{ i.maxIndex }}</td>
+            <td>{{ i.aveIndex }}</td>
+          </tr>
+        {% endfor %}
       </table>
     </div>
   </body>
