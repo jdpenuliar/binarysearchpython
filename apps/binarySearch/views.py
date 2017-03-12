@@ -45,25 +45,26 @@ def findElement(request):
         # max is equal to tayrget
         print ("min element---\n")
     else: 
-        while found == False:
-            if int(request.POST['element']) == array[arrayAveIndex]:
-                found = True
-                request.session['stepsArray'] = stepsArray
-                break;
-            elif int(request.POST['element']) < array[arrayAveIndex]:
-                arrayMaxIndex = arrayAveIndex
-            elif int(request.POST['element']) > array[arrayAveIndex]:
-                arrayMinIndex = arrayAveIndex
-            arrayAveIndex = math.floor((arrayMaxIndex + arrayMinIndex) / 2)
-            stepsArray.append(
-                    {
-                        "minIndex": arrayMinIndex,
-                        "maxIndex": arrayMaxIndex,
-                        "aveIndex": arrayAveIndex,
-                        }
-                    )
-        else:
-            print ("done---\n")
+        if 'baseArray' in request.session:
+            while found == False:
+                if int(request.POST['element']) == array[arrayAveIndex]:
+                    found = True
+                    request.session['stepsArray'] = stepsArray
+                    break;
+                elif int(request.POST['element']) < array[arrayAveIndex]:
+                    arrayMaxIndex = arrayAveIndex
+                elif int(request.POST['element']) > array[arrayAveIndex]:
+                    arrayMinIndex = arrayAveIndex
+                arrayAveIndex = math.floor((arrayMaxIndex + arrayMinIndex) / 2)
+                stepsArray.append(
+                        {
+                            "minIndex": arrayMinIndex,
+                            "maxIndex": arrayMaxIndex,
+                            "aveIndex": arrayAveIndex,
+                            }
+                        )
+            else:
+                print ("done---\n")
     return redirect('/')
 
 def setArray(request):
@@ -75,6 +76,10 @@ def setArray(request):
     return redirect('/')
 
 def resetArray(request):
-    del request.session['baseArray']
-    del request.session['stepsArray']
+    if 'baseArray' in request.session:
+        del request.session['baseArray']
+    
+    if 'stepsArray' in request.session:
+        del request.session['stepsArray']
+
     return redirect('/')
