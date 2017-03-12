@@ -7,7 +7,7 @@ def index(request):
         baseArray = request.session['baseArray']
     else:
         baseArray = []
-    
+
     if 'stepsArray' in request.session:
         stepsArray = request.session['stepsArray']
     else:
@@ -42,18 +42,21 @@ def findElement(request):
     elif arrayMinIndex == arrayMaxIndex:
         #only one element in the array
         print ("one element---\n")
-    elif array[arrayMaxIndex] == int(request.POST['element']):
-        # max is equal to tayrget
-        print ("max element---\n")
-    elif array[arrayMinIndex] == int(request.POST['element']):
-        # max is equal to tayrget
-        print ("min element---\n")
+
+    elif arrayMaxIndex < arrayMinIndex:
+        print ("element is not present")
     else: 
         while found == False:
             if int(request.POST['element']) == array[arrayAveIndex]:
                 found = True
                 request.session['stepsArray'] = stepsArray
                 break;
+            elif array[arrayMaxIndex] == int(request.POST['element']):
+                # max is equal to value of current array of max index 
+                print ("max element---\n")
+            elif array[arrayMinIndex] == int(request.POST['element']):
+                # max is equal to array of of min index 
+                print ("min element---\n")
             elif int(request.POST['element']) < array[arrayAveIndex]:
                 arrayMaxIndex = arrayAveIndex
             elif int(request.POST['element']) > array[arrayAveIndex]:
@@ -74,14 +77,14 @@ def setArray(request):
     tempArray = []
     if request.method == "POST":
         for count in range(0, int(request.POST['baseArray'])):
-            tempArray.append(count)
+            tempArray.append(count + 1)
     request.session['baseArray'] = tempArray
     return redirect('/')
 
 def resetArray(request):
     if 'baseArray' in request.session:
         del request.session['baseArray']
-    
+
     if 'stepsArray' in request.session:
         del request.session['stepsArray']
 
