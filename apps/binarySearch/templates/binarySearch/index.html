@@ -15,7 +15,6 @@
     <div class="container">
       <h1>Binary Search</h1>
       <h3>Base array: {{ baseArray }}</h3>
-      <h4>steps array: {{ stepsArray }}</h4>
       <form action="/resetArray" method="POST">
         {% csrf_token %}
         <button type="submit" type="button" class="btn btn-danger">Reset Array</button>
@@ -37,6 +36,7 @@
         </div>
         <button type="submit" type="button" class="btn btn-primary">Find Element</button>
       </form>
+      <h1>Steps</h1>
       <table class="table table-hover">
         <tr>
           <th>Min</th>
