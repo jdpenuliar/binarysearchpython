@@ -1,63 +1,70 @@
 from django.shortcuts import render, HttpResponse, redirect
-
 import math
 
 # Create your views here.
-
 def index(request):
     if 'baseArray' in request.session:
         baseArray = request.session['baseArray']
     else:
         baseArray = []
+    
+    if 'stepsArray' in request.session:
+        stepsArray = request.session['stepsArray']
+    else:
+        stepsArray = []
     data = {
             'baseArray': baseArray,
+            'stepsArray': stepsArray, 
             'haha': 20 
             }
     return render(request, 'binarySearch/index.html', data)
 
 def findElement(request):
-    print ("find-----\n", request.POST['element'])
     array = request.session['baseArray']
     arrayMinIndex = 0 
     arrayMaxIndex = len(array) - 1
     arrayAveIndex = math.floor(len(array) / 2)
-
-    arrayMins = []
-    arrayMaxes = []
     found = False
-
-
-
-
-    print ("array-----\n", array)
-    print ("arrayMin-----\n", arrayMinIndex)
-    print ("arrayMax-----\n", arrayMaxIndex)
-    print ("arrayAve-----\n", arrayAveIndex)
-
+    stepsArray = [
+            {
+                "minIndex": arrayMinIndex,
+                "maxIndex": arrayMaxIndex,
+                "aveIndex": arrayAveIndex,
+                }
+            ]
     if len(array) == 0:
         # array has no elements
-        return redirect('/')
+        print ("first try---\n")
     elif arrayMinIndex == arrayMaxIndex:
         #only one element in the array
-        return redirect('/')
+        print ("one element---\n")
     elif array[arrayMaxIndex] == int(request.POST['element']):
-        # max is equal to target
-        return redirect('/')
+        # max is equal to tayrget
+        print ("max element---\n")
+    elif array[arrayMinIndex] == int(request.POST['element']):
+        # max is equal to tayrget
+        print ("min element---\n")
     else: 
-        while not found:
+        while found == False:
             if int(request.POST['element']) == array[arrayAveIndex]:
-                # found
-                return redirect('/')
-            elif array[arrayAveIndex] < int(request.POST['element']):
-                arrayMinIndex = arrayAveIndex
-                #arrayMaxIndex statys the same since its the last
-                arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
-            elif  int(request.POST['element']) < array[arrayAveIndex]:
+                found = True
+                request.session['stepsArray'] = stepsArray
+                break;
+            elif int(request.POST['element']) < array[arrayAveIndex]:
                 arrayMaxIndex = arrayAveIndex
-                #arrayMinIndex statys the same since its less than ave 
-                arrayAveIndex = math.floor(arrayMaxIndex / arrayMinIndex)
+            elif int(request.POST['element']) > array[arrayAveIndex]:
+                arrayMinIndex = arrayAveIndex
+            arrayAveIndex = math.floor((arrayMaxIndex + arrayMinIndex) / 2)
+            stepsArray.append(
+                    {
+                        "minIndex": arrayMinIndex,
+                        "maxIndex": arrayMaxIndex,
+                        "aveIndex": arrayAveIndex,
+                        }
+                    )
         else:
-            return redirect('/')
+            print ("done---\n")
+    return redirect('/')
 
 def setArray(request):
     tempArray = []
@@ -69,6 +76,5 @@ def setArray(request):
 
 def resetArray(request):
     del request.session['baseArray']
+    del request.session['stepsArray']
     return redirect('/')
-
-
