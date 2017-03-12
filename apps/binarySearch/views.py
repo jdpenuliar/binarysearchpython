@@ -20,6 +20,10 @@ def index(request):
     return render(request, 'binarySearch/index.html', data)
 
 def findElement(request):
+
+    if 'baseArray' not in request.session:
+        return redirect("/")
+
     array = request.session['baseArray']
     arrayMinIndex = 0 
     arrayMaxIndex = len(array) - 1
@@ -45,26 +49,25 @@ def findElement(request):
         # max is equal to tayrget
         print ("min element---\n")
     else: 
-        if 'baseArray' in request.session:
-            while found == False:
-                if int(request.POST['element']) == array[arrayAveIndex]:
-                    found = True
-                    request.session['stepsArray'] = stepsArray
-                    break;
-                elif int(request.POST['element']) < array[arrayAveIndex]:
-                    arrayMaxIndex = arrayAveIndex
-                elif int(request.POST['element']) > array[arrayAveIndex]:
-                    arrayMinIndex = arrayAveIndex
-                arrayAveIndex = math.floor((arrayMaxIndex + arrayMinIndex) / 2)
-                stepsArray.append(
-                        {
-                            "minIndex": arrayMinIndex,
-                            "maxIndex": arrayMaxIndex,
-                            "aveIndex": arrayAveIndex,
-                            }
-                        )
-            else:
-                print ("done---\n")
+        while found == False:
+            if int(request.POST['element']) == array[arrayAveIndex]:
+                found = True
+                request.session['stepsArray'] = stepsArray
+                break;
+            elif int(request.POST['element']) < array[arrayAveIndex]:
+                arrayMaxIndex = arrayAveIndex
+            elif int(request.POST['element']) > array[arrayAveIndex]:
+                arrayMinIndex = arrayAveIndex
+            arrayAveIndex = math.floor((arrayMaxIndex + arrayMinIndex) / 2)
+            stepsArray.append(
+                    {
+                        "minIndex": arrayMinIndex,
+                        "maxIndex": arrayMaxIndex,
+                        "aveIndex": arrayAveIndex,
+                        }
+                    )
+        else:
+            print ("done---\n")
     return redirect('/')
 
 def setArray(request):
