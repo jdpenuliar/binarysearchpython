@@ -12,10 +12,22 @@ def index(request):
         stepsArray = request.session['stepsArray']
     else:
         stepsArray = []
+
+    if 'maxNumGuesses' in request.session:
+        maxNumGuesses = request.session['maxNumGuesses']
+    else:
+        maxNumGuesses = 'no array yet' 
+        
+    if 'numGuesses' in request.session:
+        numGuesses = request.session['numGuesses']
+    else:
+        numGuesses = 'no array yet'
+
     data = {
             'baseArray': baseArray,
-            'stepsArray': stepsArray, 
-            'haha': 20 
+            'stepsArray': stepsArray,
+            'maxNumGuesses': maxNumGuesses,
+            'numGuesses': numGuesses,
             }
     return render(request, 'binarySearch/index.html', data)
 
@@ -36,6 +48,7 @@ def findElement(request):
                 "aveIndex": arrayAveIndex,
                 }
             ]
+    count = 0
     if len(array) == 0:
         # array has no elements
         print ("first try---\n")
@@ -47,9 +60,11 @@ def findElement(request):
         print ("element is not present")
     else: 
         while found == False:
+            count += 1
             if int(request.POST['element']) == array[arrayAveIndex]:
                 found = True
                 request.session['stepsArray'] = stepsArray
+                request.session['numGuesses'] = count
                 break;
             elif array[arrayMaxIndex] == int(request.POST['element']):
                 # max is equal to value of current array of max index 
@@ -77,8 +92,16 @@ def setArray(request):
     tempArray = []
     if request.method == "POST":
         for count in range(0, int(request.POST['baseArray'])):
-            tempArray.append(count + 1)
-    request.session['baseArray'] = tempArray
+            tempArray.append(count)
+        request.session['baseArray'] = tempArray
+
+        x = math.ceil(math.log2(len(tempArray)))
+        print ("x---\n", x)
+        if x % 2 == 0:
+            request.session['maxNumGuesses'] = x + 1
+        else:
+            request.session['maxNumGuesses'] = x + 2
+
     return redirect('/')
 
 def resetArray(request):
@@ -87,5 +110,11 @@ def resetArray(request):
 
     if 'stepsArray' in request.session:
         del request.session['stepsArray']
+
+    if 'maxNumGuesses' in request.session:
+        del request.session['maxNumGuesses']
+
+    if 'numGuesses' in request.session:
+        del request.session['numGuesses']
 
     return redirect('/')
