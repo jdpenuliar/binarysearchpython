@@ -94,14 +94,15 @@ def setArray(request):
         for count in range(0, int(request.POST['baseArray'])):
             tempArray.append(count)
         request.session['baseArray'] = tempArray
-
+        ''' 
         x = math.ceil(math.log2(len(tempArray)))
         print ("x---\n", x)
         if x % 2 == 0:
             request.session['maxNumGuesses'] = x + 1
         else:
             request.session['maxNumGuesses'] = x + 2
-
+        '''
+        request.session['maxNumGuesses'] = math.ceil(math.log2(len(tempArray))) + 1
     return redirect('/')
 
 def resetArray(request):
